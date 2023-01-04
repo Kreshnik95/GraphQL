@@ -11,45 +11,45 @@ const {
 } = require('graphql')
 const app = express()
 
-const authors = [
-    { id: 1, name: 'James Clear'},
-    { id: 2, name: 'J.K Rowling'},
-    { id: 3, name: 'Brent Weeks'}
+const title = [
+    { id: 1, name: 'Harry Potter and Goblet of Fire'},
+    { id: 2, name: 'American Psycho'},
+    { id: 3, name: 'The Blind Side'}
 ]
 
-const books = [
-    { id: 1, name: 'Atomic Habits', authorId: 1 },
-    { id: 2, name: 'Harry Potter and Goblet of Fire', authorId: 2},
-    { id: 3, name: 'Beyond the Shadows', authorId: 3}
+const actors = [
+    { id: 1, name: 'Daniel Radcliffe', actorId: 1 },
+    { id: 2, name: 'Christian Bale', actorId: 2},
+    { id: 3, name: 'Sandra Bullock', actorId: 3}
 
 ]
 
-const BookType = new GraphQLObjectType({
-    name: 'Book',
-    description: 'This represent a book written by an author',
+const TitleType = new GraphQLObjectType({
+    name: 'title',
+    description: 'This tells a title',
     fields: () => ({
         id: {type: GraphQLNonNull(GraphQLInt)},
         name: {type: GraphQLNonNull(GraphQLString)},
-        authorId: {type: GraphQLNonNull(GraphQLInt)},
-        author: {
-            type: AuthorType,
+        actorId: {type: GraphQLNonNull(GraphQLInt)},
+        actor: {
+            type: ActorType,
             resolve: (book) => {
-                return authors.find(author => author.id === book.authorId)
+                return actors.find(actor => actor.id === title.actorId)
             }
         }
     })
 })
-const AuthorType = new GraphQLObjectType({
-    name: 'Author',
-    description: 'This represent an author of a book',
+const ActorType = new GraphQLObjectType({
+    name: 'Actor',
+    description: 'This tells a actor of a title',
     fields: () => ({
         id: {type: GraphQLNonNull(GraphQLInt)},
         name: {type: GraphQLNonNull(GraphQLString)},
-        authorId: {type: GraphQLNonNull(GraphQLInt)},
-        author: {
-            type: AuthorType,
-            resolve: (book) => {
-                return authors.find(author => author.id === book.authorId)
+        actorsId: {type: GraphQLNonNull(GraphQLInt)},
+        actors: {
+            type: ActorType,
+            resolve: (title) => {
+                return actors.find(actors => actor.id === title.actorId)
             }
         }
     })
@@ -60,15 +60,15 @@ const RootQueryType = new GraphQLObjectType({
     name: 'Query',
     description: 'Root Query',
     fields: () => ({
-        books: {
+        titles: {
             type: new GraphQLList(Booktype),
-            description: 'List of All Books',
-            resolve: () => books 
+            description: 'List of All titles'
+            resolve: () => titles 
         },
-        authors: {
+        actors: {
             type: new GraphQLList(Booktype),
-            description: 'List of All Authors',
-            resolve: () => authors
+            description: 'List of All Actors',
+            resolve: () => actors
     }
 })
 })
@@ -80,4 +80,4 @@ app.use('/graphql', expressGraphQL({
     schema: schema,
     graphql: true
 }))
-app.listen(5000., () => console.log('Server Running'))
+app.listen(3000., () => console.log('Running Server'))
